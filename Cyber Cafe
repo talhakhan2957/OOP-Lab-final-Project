@@ -1,0 +1,1689 @@
+#include <iostream>
+#include <cstring>
+#include <iomanip>
+#include <fstream>
+#include<windows.h>
+#define RESET "\033[0m"
+#define RED "\033[31m"
+#define GREEN "\033[32m"
+#define YELLOW "\033[33m"
+#define BLUE "\033[34m"
+#define BOLD "\033[1m"
+
+
+using namespace std;
+extern int e1;
+extern int e2;
+extern int e3;
+extern int e4;
+extern int e5;
+
+class person {
+protected:
+	char Username[10];
+	char username[6][10];
+	char Password[10];
+	char password[6][10];
+public:
+	virtual void identify() {}
+	~person() {}
+
+};
+
+
+class stock
+{
+protected:
+	int dish_num[15];
+	int quantity[15];
+	int Quantity[15];
+	char Dishname[15];
+	char dishname[16][19];
+	int Price[15];
+	int price[15];
+	int num_of_dishes;
+
+public:
+	stock()
+	{
+		num_of_dishes = 15;
+	}
+	void menu();
+	void order_menu(char, int);
+	void search(char);
+	int searching_bill();
+	void Stocks();
+
+};
+
+
+class Admin :public stock, public person
+{
+private:
+
+
+	char password1[5][5];
+	char username1[10][10];
+
+
+public:
+	void identify();
+	void add_user();
+	void remove_student();
+	void add_employee();
+	void remove_employee();
+	void schedule_handle();
+	void remove_dish();
+	void complain_a();
+	void complain_b();
+	void add_item();
+	void best_seller();
+	void reading();
+	void update(int);
+
+};
+class Employee :public stock, public person
+{
+public:
+	void identify();
+	void take_order(char[]);
+	void complain(char[]);
+
+};
+class Student : public stock, public person
+{
+private:
+
+	char schedule;
+	char O_S_from_menu;
+	int option;
+
+
+public:
+	void identify();
+	void Complain();
+
+};
+
+void Admin::identify()
+{
+
+	cout << GREEN;
+	int c = 40, f = 67;
+	for (int i = 0; i <= f; i++)
+	{
+		if (i == 0)
+		{
+			cout << "                              ";
+		}
+		Sleep(10);
+		cout << "@";
+	}
+	cout << endl;
+	Sleep(c);
+	cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+	Sleep(c);
+	cout << "                            " << setw(2) << setfill(' ') << " " << "@@           " << BLUE << "               Welcome!     " << GREEN << "                         @@" << endl;
+	Sleep(c);
+	cout << "                            " << setw(2) << setfill(' ') << " " << "@@             " << BLUE << "         To  Admin's Account    " << GREEN << "                   @@" << endl;
+	Sleep(c);
+	cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+	for (int i = 0; i <= f; i++)
+	{
+		if (i == 0)
+		{
+			cout << "                              ";
+		}
+		Sleep(10);
+		cout << "@";
+	}
+	cout << RESET;
+	cout << endl;
+	fstream read;
+	read.open("admin.txt", ios::in);
+	read.getline(username[0], 6, '	');
+	read.getline(password[0], 6);
+	read.close();
+	int i = 5;
+	int a, option, d;
+
+	while (i > 0)
+	{
+		cin.ignore();
+		do
+		{
+			if (i < 5)
+			{
+				if (i < 0)
+					break;
+				cout << RED << "Attempts left :" << i << endl;
+			}
+			cout << GREEN << "Enter Username : ";
+			cin.getline(Username, 10);
+
+			if (strcmp(Username, username[0]) == 0)
+			{
+				cout << YELLOW << "Username Correct" << endl;
+				i = 0;
+				a = 2;
+			}
+			else
+			{
+				cout << RED << "Username not correct " << endl;
+			}
+			i--;
+		} while (strcmp(Username, username[0]) != 0);
+	}
+	int s = 30;
+	i = 5;
+	if (a == 2)
+	{
+
+		do
+		{
+			if (i < 5)
+			{
+				if (i < 0)
+					break;
+				cout << RED << "Attempts left :" << i << endl;
+			}
+			cout << GREEN << "Enter Password : ";
+
+			cin.getline(Password, 10);
+
+			if (strcmp(Password, password[0]) == 0)
+			{
+				cout << YELLOW << "Correct Password" << endl;
+				do
+				{
+					cout << GREEN;
+					cout << setw(s) << setfill(' ') << " " << "You want to : " << endl;
+					cout << setw(s) << setfill(' ') << " " << "1. Add user\n"
+						<< setw(s) << " " << "2. Remove Student\n"
+						<< setw(s) << " " << "3. Add Employee\n"
+						<< setw(s) << " " << "4. Remove Employee\n"
+						<< setw(s) << " " << "5. Manage the Schedule order\n"
+						<< setw(s) << " " << "6. Best Seller Employee\n"
+						<< setw(s) << " " << "7. Check the stocks \n"
+						<< setw(s) << " " << "8. Check the layout of the Menu\n"
+						<< setw(s) << " " << "9. Remove Dish\n"
+						<< setw(s) << " " << "10.Add Item \n"
+						<< setw(s) << " " << "11.Update Item\n"
+						<< setw(s) << " " << "12.Check the complain of Employee\n"
+						<< setw(s) << " " << "13.Check the complain of Students\n"
+						<< setw(s) << " " << "14.log Out" << endl;
+					cout << "Choose an option please : ";
+					cout << BLUE << BOLD;
+					cin >> option;
+					cout << RESET;
+					switch (option)
+					{
+					case 1:
+						add_user();
+						break;
+					case 2:
+						remove_student();
+						break;
+					case 3:
+						add_employee();
+						break;
+					case 4:
+						remove_employee();
+						break;
+					case 5:
+						schedule_handle();
+						break;
+					case 6:
+						best_seller();
+						break;
+					case 7:
+						Stocks();
+						break;
+					case 8:
+						menu();
+						break;
+					case 9:
+						remove_dish();
+						break;
+
+					case 10:
+						add_item();
+						break;
+					case 11:
+						cout << GREEN << "Enter the number of dish you want to update : ";
+						cout << BLUE;
+						cin >> d;
+						update(d);
+						break;
+					case 12:
+						complain_a();
+						break;
+					case 13:
+						complain_b();
+						break;
+					case 14:
+						cout << RED << "Loging You Out" << RESET << endl;
+						break;
+					}
+					if (option > 14 || option < 1)
+					{
+						cout << RED << "Wrong Input" << RESET << endl;
+					}
+				} while (option != 14);
+			}
+
+			else
+			{
+				cout << RED << "Password not correct " << endl;
+				cout << "Login failed" << endl;
+				i--;
+			}
+
+		}
+
+		while (strcmp(Password, password[0]) != 0);
+	}
+
+	else
+	{
+		cout << setw(s) << setfill(' ') << " " << RED << "Login failed" << endl;
+	}
+	cout << RESET;
+}
+void Admin::add_user()
+{
+	char Username[10];
+	char Password[10];
+
+	cout << BLUE << "Enter the Student's name you want to Add : ";
+	cin.ignore();
+	cin.getline(Username, 10, '\n');
+	cout << "Enter the Student's Password  : ";
+	cin.getline(Password, 10, '\n');
+
+	fstream write;
+	write.open("student.txt", ios::out | ios::app);
+
+	write << endl;
+
+	for (int i = 0; Username[i] != '\0'; i++)
+	{
+		write << Username[i];
+	}
+	write << " ";
+
+	for (int i = 0; Password[i] != '\0'; i++)
+	{
+		write << Password[i];
+	}
+	write.close();
+	cout << YELLOW << "Added a Student Successfully" << RESET << endl;
+}
+
+void Admin::remove_student()
+{
+	int d = -1;
+	int i = 0;
+	char Username[10];
+	char username[5][10];
+	char Password[10];
+	char password[5][5];
+	cout << BLUE << "Enter the Student's Name you want to" << RED << " Remove " << BLUE << ": " << RED;
+	cin.ignore();
+	cin.getline(Username, 10, '\n');
+
+	fstream read;
+	read.open("student.txt", ios::in);
+
+	for (i = 0; !read.eof(); i++)
+	{
+		read >> username[i] >> password[i];
+	}
+
+	read.close();
+	fstream write;
+	write.open("student.txt", ios::out);
+
+	for (int j = 0; j < i; j++)
+	{
+		if (strcmp(Username, username[j]) == 0)
+		{
+			continue;
+		}
+		write << username[j] << " " << password[j] << endl;
+	}
+	cout << RED << "Student Removed Successfully" << RESET << endl;
+	write.close();
+}
+
+void Admin::add_employee()
+{
+	char Username[10];
+	char Password[10];
+
+	cout << BLUE << "Enter the Employee's name you want to Add : ";
+	cin.ignore();
+	cin.getline(Username, 10, '\n');
+	cout << "Enter the Employee's Password  : ";
+	cin.getline(Password, 10, '\n');
+
+	fstream write;
+	write.open("employee.txt", ios::out | ios::app);
+
+	for (int i = 0; Username[i] != '\0'; i++)
+	{
+		write << Username[i];
+	}
+	write << " ";
+
+	for (int i = 0; Password[i] != '\0'; i++)
+	{
+		write << Password[i];
+	}
+	write << endl;
+	write.close();
+	cout << YELLOW "Added an Employee Successfully" << RESET << endl;
+}
+
+void Admin::remove_employee()
+{
+	int d = -1;
+	int i = 0;
+	char Username[10];
+	char username[5][10];
+	char Password[10];
+	char password[5][5];
+	cout << BLUE << "Enter the Employee's Name you want to " << RED << "Remove " << BLUE << ": ";
+	cin.ignore();
+	cin.getline(Username, 10, '\n');
+
+	fstream read;
+	read.open("employee.txt", ios::in);
+	cout << !read.eof() << endl;
+
+	for (i = 0; !read.eof(); i++)
+	{
+		read >> username[i] >> password[i];
+	}
+
+	read.close();
+	fstream write;
+	write.open("employee.txt", ios::out);
+
+	for (int j = 0; j < i; j++)
+	{
+		if (strcmp(Username, username[j]) == 0)
+		{
+			continue;
+		}
+		write << username[j] << " " << password[j] << endl;
+	}
+	cout << RED << "The employee is removed successfuly" << RESET << endl;
+	write.close();
+}
+
+void Admin::schedule_handle()
+{
+	char dish_num[2][11];
+	char quantity[2][15];
+	char o_quantity[2][15];
+	char dishname[2][19];
+
+	char o_price[2][10];
+	char price[2][10];
+	char option;
+
+	fstream read, write;
+	read.open("schedule.txt", ios::in); // for reading order from order file
+	write.open("Ali.txt", ios::out | ios::app);
+
+	if (!read.is_open())
+	{
+		cout << "Error opening file 'schedule.txt'" << endl;
+		return; // or handle the error appropriately
+	}
+	for (int i = 0; !read.eof(); i++)
+	{
+		read >> dish_num[i] >> dishname[i] >> quantity[i] >> o_quantity[i] >> price[i] >> o_price[i];
+		if (read.eof())
+		{
+			break;
+		}
+	}
+
+	cout << "             " << GREEN << "|" << setw(120) << setfill('-') << right << "|" << endl;
+	cout << "             " << GREEN << "|  " << YELLOW << setw(8) << setfill(' ') << left << "Dish number" << setw(15) << GREEN << "|" << YELLOW << "  Dish Name" << setw(20) << right << GREEN << "|" << YELLOW << "  Quantity  " << setw(9) << right << GREEN << "|" << YELLOW << "  Order Quantity" << setw(9) << right << GREEN << "|" << YELLOW << "  price " << setw(9) << right << GREEN << "|" << YELLOW << "  Total price " << endl;
+	cout << "             " << GREEN << "|" << setw(120) << setfill('-') << "|" << endl;
+	cout << "             " << GREEN << "|  " << YELLOW << setw(21) << setfill(' ') << left << dish_num[0] << setw(3) << GREEN << "|  " << YELLOW << setw(24) << left << dishname[0] << GREEN << "|  " << YELLOW << setw(14) << quantity[0] << GREEN << "|  " << YELLOW << setw(18) << o_quantity[0] << GREEN << "|  " << YELLOW << setw(10) << setfill(' ') << left << price[0] << GREEN << "|  " << YELLOW << setw(14) << setfill(' ') << left << o_price[0] << GREEN << " |" << endl;
+	cout << "             " << GREEN << setw(121) << setfill('-') << "-" << RESET << endl;
+
+	read.close(); // reading close
+	cout << YELLOW << "Confirm the Order\nAnswer(Y/N) : ";
+	cin >> option;
+	if (option == 'y' || option == 'Y')
+	{
+
+		cout << "Order Confirmed" << endl;
+		for(int i=0;Username[i]!='\0';i++)
+				{
+					write<<Username[i];
+
+			}
+		write << " Your Schedule order has been confirmed" << endl;
+	}
+
+	else
+	{
+		cout << RED << "Order Cancel" << endl;
+	}
+	cout << RESET;
+	write.close(); // write close
+}
+
+void Admin::remove_dish()
+{
+	int dish_num[15];
+	int quantity[15];
+	char Dishname[10];
+	char dishname[16][19];
+	int Price[15];
+	int price2[15];
+	int i;
+	const int num_of_dishes = 15;
+
+	cout << BLUE << "Enter the Dish's Name you want to" << RED << " Remove " << BLUE << ": " << RED;
+	cin.ignore();
+	cin.getline(Dishname, 10, '\n');
+
+	fstream read;
+	read.open("menu.txt", ios::in);
+
+	if (!read.is_open())
+	{
+		cout << RED << "Error openning the file" << endl;
+	}
+	else
+	{
+		// Read menu from the file for removing ordering
+		for (i = 0; i < num_of_dishes; i++)
+		{
+			read >> dish_num[i] >> dishname[i] >> quantity[i] >> price[i];
+		}
+		read.close();
+		fstream write;
+		write.open("menu.txt", ios::out);
+
+		for (int j = 0; j < i; j++)
+		{
+			if (strcmp(Dishname, dishname[j]) == 0)
+			{
+				continue;
+			}
+			write << dish_num[j] << " " << dishname[j] << " " << quantity[j] << " " << price[j] << endl;
+		}
+		cout << RED << "Dish Removed Successfuly" << RESET << endl;
+		write.close();
+	}
+}
+
+void Admin::complain_a()
+{
+	char complain[100];
+	ifstream read("complain.txt");
+
+	if (!read.is_open())
+	{
+		cout << RED << "Error opening the file" << endl;
+		return;
+	}
+
+	while (read.getline(complain, 100, '\n')) // Read until newline
+	{
+		cout << BLUE << complain << endl;
+	}
+
+	read.close();
+}
+void Admin::complain_b()
+{
+	char complain[100];
+	ifstream read("S_complain.txt");
+
+	if (!read.is_open())
+	{
+		cout << RED << "Error opening the file" << endl;
+		return;
+	}
+
+	while (read.getline(complain, 100, '\0')) // Read until end
+	{
+		cout << BLUE << complain << endl;
+	}
+
+	read.close();
+}
+
+void Admin::add_item()
+{
+	num_of_dishes++;
+	int dishnum;
+	string dishname;
+	int quantity;
+	int price;
+
+	cout << BLUE << "Enter dish number";
+	cin >> dishnum;
+	cout << "Enter the Item's name you want to Add : ";
+	cin >> dishname;
+	cout << "Enter the Item's Quantity  : ";
+	cin >> quantity;
+	cout << "Enter the Item's Price : ";
+	cin >> price;
+
+	fstream write;
+	write.open("menu.txt", ios::out | ios::app);
+
+	write << dishnum << " " << dishname << " " << quantity << " " << price;
+	cout << "Added an Item Successfully" << endl;
+	cout << RESET;
+}
+void Admin::best_seller()
+{
+	fstream read_e, read;
+
+	read_e.open("best.txt", ios::in);
+	read.open("employee.txt",ios::in);
+	for (int i = 0; !read.eof(); i++)
+	{
+
+		read >> username1[i] >> password1[i];
+	}
+	read.close();
+	read_e >> e1 >> e2 >> e3 >> e4 >> e5;
+	int best = 0;
+	reading();
+	if (e1 > e2 && e1 > e3 && e1 > e4 && e1 > e5)
+	{
+		best = 1;
+	}
+	else if (e2 > e3 && e2 > e4 && e2 > e5)
+	{
+		best = 2;
+	}
+	else if (e3 > e4 && e3 > e5)
+	{
+		best = 3;
+	}
+	else if (e4 > e5)
+	{
+		best = 4;
+	}
+	else
+	{
+		best = 5;
+	}
+
+	cout << YELLOW "The best Seller is Employee :" << username1[best - 1] << RESET << endl;
+}
+void Admin::update(int d)
+{
+	fstream read, write;
+	read.open("menu.txt", ios::in);
+
+	if (!read.is_open())
+	{
+		cout << RED << "Error opening the file" << endl;
+		return;
+	}
+	for (int i = 0; !read.eof(); i++)
+	{
+		read >> dish_num[i] >> dishname[i] >> quantity[i] >> price[i];
+	}
+	read.close();
+
+	cout << BLUE << "Enter Quantity: ";
+	cin >> quantity[d - 1];
+	cout << "Enter Price: ";
+	cin >> price[d - 1];
+
+	// Move to the beginning of the record
+	 //file.seekp(offset);
+	write.open("menu.txt", ios::out);
+	for (int i = 0; i < num_of_dishes; i++)
+	{
+
+		write << dish_num[i] << " " << dishname[i] << " " << quantity[i] << " " << price[i] << endl;
+	}
+
+	write.close();
+	cout << RESET;
+}
+
+void Admin::reading()
+{
+
+	fstream read_e;
+	read_e.open("employee.txt", ios::in);
+
+	// Read usernames and passwords from the file
+	for (int i = 0; i < 5; i++)
+	{
+		read_e >> username1[i] >> password1[i];
+	}
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+
+// functions of employees
+void Employee::identify()
+{
+
+	cout << GREEN;
+	int c = 40, f = 67;
+	for (int i = 0; i <= f; i++)
+	{
+		if (i == 0)
+		{
+			cout << "                              ";
+		}
+		Sleep(10);
+		cout << "@";
+	}
+	cout << endl;
+	Sleep(c);
+	cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+	Sleep(c);
+	cout << "                            " << setw(2) << setfill(' ') << " " << "@@           " << BLUE << "               Welcome!     " << GREEN << "                         @@" << endl;
+	Sleep(c);
+	cout << "                            " << setw(2) << setfill(' ') << " " << "@@             " << BLUE << "        To  Employee's Section " << GREEN << "                    @@" << endl;
+	Sleep(c);
+	cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+	for (int i = 0; i <= f; i++)
+	{
+		if (i == 0)
+		{
+			cout << "                              ";
+		}
+		Sleep(10);
+		cout << "@";
+	}
+	cout << RESET;
+	cout << endl;
+	cout << GREEN << "                            " << setw(73) << setfill('-') << "-" << endl;
+	fstream read;
+	read.open("employee.txt", ios::in);
+
+	// Read usernames and passwords from the file
+	for (int i = 0; !read.eof(); i++)
+	{
+
+		read >> username[i] >> password[i];
+	}
+
+	read.close();
+
+	int i = 5;
+	int a, d;
+
+	while (i > 0)
+	{
+		cin.ignore();
+		do
+		{
+			if (i < 5)
+			{
+				if (i < 0)
+					break;
+				cout << RED << "Attempts left: " << i << endl;
+			}
+
+			cout << BLUE << "Enter Username: ";
+			cin.getline(Username, 10);
+
+			// Check if entered username is correct
+			for (int j = 0; j < 5; j++)
+			{
+				if (strcmp(Username, username[j]) == 0)
+				{
+					d = j;
+					cout << YELLOW << "Username Correct" << endl;
+					i = 0;
+					a = 2;
+					break;
+				}
+			}
+			if (a != 2)
+			{
+				cout << RED << "Username not correct" << endl;
+			}
+			i--;
+		} while (a != 2 && i > 0);
+	}
+
+	i = 5;
+
+	if (a == 2)
+	{
+		a = 1;
+		while (i > 0)
+		{
+
+			do
+			{
+				if (i < 5)
+				{
+					if (i < 0)
+						break;
+					cout << RED << "Attempts left: " << i << endl;
+				}
+
+				cout << BLUE << "Enter Password: ";
+				cin.getline(Password, 10);
+
+				// Check if entered username is correct
+
+				if (strcmp(Password, password[d]) == 0)
+				{
+					cout << YELLOW << "Password Correct" << endl;
+
+					cout << GREEN;
+					for (int i = 0; i <= f; i++)
+					{
+						if (i == 0)
+						{
+							cout << "                              ";
+						}
+						Sleep(10);
+						cout << "@";
+					}
+					cout << endl;
+					Sleep(c);
+					cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+					Sleep(c);
+					cout << "                            " << setw(2) << setfill(' ') << " " << "@@           " << BLUE << "                 Welcome!    " << GREEN << "                        @@" << endl;
+					Sleep(c);
+					cout << "                            " << setw(2) << setfill(' ') << " " << "@@             " << BLUE << "               " << setw(6) << Username << " " << GREEN << "                             @@" << endl;
+					Sleep(c);
+					cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+					for (int i = 0; i <= f; i++)
+					{
+						if (i == 0)
+						{
+							cout << "                              ";
+						}
+						Sleep(10);
+						cout << "@";
+					}
+					cout << endl;
+					cout << YELLOW << setw(52) << " " << "Account Name   :   " << username[d] << RESET << endl;
+					cout << GREEN << "                            " << setw(73) << setfill('-') << "-" << RESET << endl;
+					i = 0;
+					a = 2;
+					break;
+				}
+
+				else
+				{
+					cout << RED << "Password not correct" << endl;
+				}
+
+				i--;
+			} while (a != 2 && i > 0);
+		}
+	}
+	else
+	{
+		cout << RED << "Login failed" << endl;
+	}
+	int option, b;
+	do
+	{
+		if (a == 2)
+		{
+
+			cout << GREEN << "You want to :\n1. Take order\n2. See the stocks\n3. Search an item\n4. Complain\n5.Log out" << endl;
+			cout << "Choose an option :";
+			cin >> option;
+			cout << RESET;
+		}
+		switch (option)
+		{
+		case 1:
+			take_order(Username);
+
+			break;
+		case 2:
+			Stocks();
+			break;
+		case 3:
+			b = searching_bill();
+			break;
+		case 4:
+			complain(Username);
+			break;
+		case 5:
+			cout << RED << "Loging You Out" << RESET << endl;
+			break;
+
+		default:
+			cout << RED << "Wrong input" << RESET << endl;
+		}
+	} while (option < 5 && option > 0);
+}
+void Employee::take_order(char Username[])
+{
+
+	char option;
+
+	fstream read, write, read_b;
+	read_b >> e1 >> e2 >> e3 >> e4 >> e5;
+	read.open("order.txt", ios::in); // for reading order from order file
+	write.open("notification.txt", ios::out | ios::app);
+
+	for (int i = 0; i < 1; i++)
+	{
+		read >> dish_num[i] >> dishname[i] >> quantity[i] >> Quantity[i] >> price[i] >> Price[i];
+	}
+
+	cout << "             " << GREEN << "|" << setw(120) << setfill('-') << right << "|" << endl;
+	cout << "             " << GREEN << "|  " << YELLOW << setw(8) << setfill(' ') << left << "Dish number" << setw(15) << GREEN << "|" << YELLOW << "  Dish Name" << setw(20) << right << GREEN << "|" << YELLOW << "  Quantity  " << setw(9) << right << GREEN << "|" << YELLOW << "  Order Quantity" << setw(9) << right << GREEN << "|" << YELLOW << "  price " << setw(9) << right << GREEN << "|" << YELLOW << "  Total price " << endl;
+	cout << "             " << GREEN << "|" << setw(120) << setfill('-') << "|" << endl;
+	cout << "             " << GREEN << "|  " << YELLOW << setw(21) << setfill(' ') << left << dish_num[0] << setw(3) << GREEN << "|  " << YELLOW << setw(24) << left << dishname[0] << GREEN << "|  " << YELLOW << setw(14) << quantity[0] << GREEN << "|  " << YELLOW << setw(18) << Quantity[0] << GREEN << "|  " << YELLOW << setw(10) << setfill(' ') << left << price[0] << GREEN << "|  " << YELLOW << setw(14) << setfill(' ') << left << Price[0] << GREEN << " |" << endl;
+	cout << "             " << GREEN << setw(121) << setfill('-') << "-" << RESET << endl;
+	read.close(); // reading close
+	cout << BLUE << "Confirm the Order\nAnswer(Y/N) : ";
+	cin >> option;
+	if (option == 'y' || option == 'Y')
+	{
+
+		cout << YELLOW << "Order Confirmed" << RESET << endl;
+		for (int i = 0; Username[i] != '\0'; i++)
+		{
+			write << Username[i];
+		}
+		write << " has taken an order" << endl;
+		if (strcmp(Username, username[0]) == 0)
+		{
+			e1++;
+		}
+		else if (strcmp(Username, username[1]) == 0)
+		{
+			e2++;
+		}
+		else if (strcmp(Username, username[2]) == 0)
+		{
+			e3++;
+		}
+		else if (strcmp(Username, username[3]) == 0)
+		{
+			e4++;
+		}
+		else
+		{
+			e5++;
+		}
+	}
+
+	else
+	{
+		cout << RED << "Order Cancel" << RESET << endl;
+	}
+
+	fstream write_e;
+
+	write_e.open("best.txt", ios::out);
+
+	write_e << e1 << " " << e2 << " " << e3 << " " << e4 << " " << e5;
+
+	write_e.close();
+}
+void Employee::complain(char Username[])
+{
+	char complain[100];
+	cout << BLUE << "Write a complain :" << endl;
+	cin.ignore();
+	cin.getline(complain, 100, '\n');
+	cout << RESET;
+	fstream write;
+	write.open("complain.txt", ios::out | ios::app);
+	for (int i = 0; Username[i] != '\0'; i++)
+	{
+		write << Username[i];
+	}
+	write << " : ";
+	for (int i = 0; complain[i] != '\0'; i++)
+	{
+		write << complain[i];
+	}
+	write << endl;
+	write.close();
+}
+
+//////////////////////////////////////////////////////////////////////////////////////
+
+// Student class functions
+
+void Student::identify()
+{
+
+	cout << GREEN;
+	int c = 40, f = 67;
+	for (int i = 0; i <= f; i++)
+	{
+		if (i == 0)
+		{
+			cout << "                              ";
+		}
+		Sleep(10);
+		cout << "@";
+	}
+	cout << endl;
+	Sleep(c);
+	cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+	Sleep(c);
+	cout << "                            " << setw(2) << setfill(' ') << " " << "@@           " << BLUE << "               Welcome!     " << GREEN << "                         @@" << endl;
+	Sleep(c);
+	cout << "                            " << setw(2) << setfill(' ') << " " << "@@             " << BLUE << "        To  Student's Section  " << GREEN << "                    @@" << endl;
+	Sleep(c);
+	cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+	for (int i = 0; i <= f; i++)
+	{
+		if (i == 0)
+		{
+			cout << "                              ";
+		}
+		Sleep(10);
+		cout << "@";
+	}
+	cout << RESET;
+	cout << endl;
+	cout << GREEN << "                            " << setw(73) << setfill('-') << "-" << endl;
+	fstream read;
+	read.open("student.txt", ios::in);
+	int d;
+
+	cout << BLUE << "Do you want to give schedule order or a normal[S/N]?\nAnswer : ";
+	cin >> schedule;
+	cout << RESET;
+	// Schedule order
+	if (schedule == 'S' || schedule == 's')
+	{
+		fstream write; // For writing the schedule order in admin file
+
+		// Read usernames and passwords from the file for schedule ordering
+		for (int i = 0; !read.eof(); i++)
+		{
+			read >> username[i] >> password[i];
+		}
+		read.close();
+
+		int i = 5;
+		int a = 0;
+		cin.ignore();
+		while (i > 0)
+		{
+
+			do
+			{
+				if (i < 5)
+				{
+					if (i < 0)
+						break;
+					cout << RED << "Attempts left: " << i << endl;
+				}
+
+				cout << BLUE << "Enter Username: ";
+
+				cin.getline(Username, 10);
+
+				for(int i=0;Username[i]!='\0';i++)
+				{
+					write<<Username[i];
+				}
+
+				// Check if entered username is correct
+
+				for (int j = 0; j < 5; j++)
+				{
+
+					if (strcmp(Username, username[j]) == 0)
+					{
+
+						d = j;
+						cout << YELLOW << "Username Correct" << endl;
+
+						i = 0;
+						a = 2;
+						break;
+					}
+				}
+
+				if (a != 2)
+				{
+					cout << RED << "Username not correct" << endl;
+				}
+
+				i--;
+			} while (a != 2 && i > 0);
+		}
+
+		i = 5;
+
+		if (a == 2)
+		{
+			a = 1;
+			while (i > 0)
+			{
+
+				do
+				{
+					if (i < 5)
+					{
+						if (i < 0)
+							break;
+						cout << RED << "Attempts left: " << i << endl;
+					}
+
+					cout << BLUE << "Enter Password: ";
+					cin.getline(Password, 10);
+
+					// Check if entered username is correct
+
+					if (strcmp(Password, password[d]) == 0)
+					{
+						cout << YELLOW << "Password Correct" << endl;
+						cout << GREEN;
+						for (int i = 0; i <= f; i++)
+						{
+							if (i == 0)
+							{
+								cout << "                              ";
+							}
+							Sleep(10);
+							cout << "@";
+						}
+						Sleep(c);
+						cout << endl;
+						cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+						Sleep(c);
+						cout << "                            " << setw(2) << setfill(' ') << " " << "@@           " << BLUE << "                 Welcome!    " << GREEN << "                        @@" << endl;
+						Sleep(c);
+						cout << "                            " << setw(2) << setfill(' ') << " " << "@@             " << BLUE << "               " << setw(6) << Username << " " << GREEN << "                             @@" << endl;
+						Sleep(c);
+						cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+						Sleep(c);
+						cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+
+						cout << "                            " << GREEN << setw(73) << setfill('-') << "-" << endl;
+						menu();
+
+						for (int a = 0; a == 0; a++)
+						{
+							cout << BLUE << "Want to:" << endl;
+							cout << "1. order? or Search a dish? " << endl;
+							cout << "2. Complain" << endl;
+							cout << "Answer : ";
+							cin >> option;
+							if (option == 1)
+							{
+								cout << BLUE << "Want to order? or Search a dish?\nAnswer(O/S) : ";
+								cin >> O_S_from_menu;
+								cout << RESET;
+								if (O_S_from_menu == 'o' || O_S_from_menu == 'O')
+								{
+
+									d = searching_bill();
+									order_menu(schedule, d);
+								}
+								else if (O_S_from_menu == 's' || O_S_from_menu == 'S')
+								{
+									search(schedule);
+								}
+								else
+								{
+									a = 0;
+									cout << RED << "You have entered wrong option" << endl;
+								}
+							}
+							else if (option == 2)
+							{
+								Complain();
+							}
+							else
+							{
+								a = 0;
+								cout << RED << "You have entered wrong option" << endl;
+							}
+							i = 0;
+							a = 2;
+							break;
+						}
+					}
+					else
+					{
+						cout << RED << "Password not correct" << endl;
+					}
+
+					i--;
+				} while (a != 2 && i > 0);
+			}
+		}
+		else
+		{
+			cout << RED << "Login failed" << endl;
+		}
+	}
+
+	// Normal order from a customer
+	else if (schedule == 'N' || schedule == 'n')
+	{
+		menu();
+		for (int a = 0; a == 0; a++)
+		{
+			cout << BLUE << "Want to:" << endl;
+			cout << "1. order? or Search a dish? " << endl;
+			cout << "2. Complain" << endl;
+			cout << "Answer : ";
+			cin >> option;
+			if (option == 1)
+			{
+				cout << BLUE << "Want to order? or Search a dish?\nAnswer(O/S) : ";
+				cin >> O_S_from_menu;
+				cout << RESET;
+				if (O_S_from_menu == 'o' || O_S_from_menu == 'O')
+				{
+
+					d = searching_bill();
+					order_menu(schedule, d);
+				}
+				else if (O_S_from_menu == 's' || O_S_from_menu == 'S')
+				{
+					search(schedule);
+				}
+				else
+				{
+					a = 0;
+					cout << RED << "You have entered wrong option" << endl;
+				}
+			}
+			else if (option == 2)
+			{
+				Complain();
+			}
+			else
+			{
+				a = 0;
+				cout << RED << "You have entered wrong option" << endl;
+			}
+		}
+	}
+	else
+	{
+		cout << RED << "Wrong Answer" << endl;
+	}
+
+	cout << RED << "You are returning back to the main page" << endl;
+	cout << RESET;
+}
+void Student::Complain()
+{
+	char complain[100];
+	cout << BLUE << "Write a complain :" << endl;
+	cin.ignore();
+	cin.getline(complain, 100, '\n');
+	cout << RESET;
+	fstream write;
+	write.open("S_complain.txt", ios::out | ios::app);
+	for (int i = 0; complain[i] != '\0'; i++)
+	{
+		write << complain[i];
+	}
+	write << endl;
+}
+
+void stock::menu()
+{
+	fstream read;
+	read.open("menu.txt", ios::in);
+
+	if (!read.is_open())
+	{
+		cout << RED << "Error opening the file" << endl;
+	}
+	else
+	{
+		// Read menu from the file for schedule ordering
+		for (int i = 0; i < num_of_dishes; i++)
+		{
+			read >> dish_num[i] >> dishname[i] >> quantity[i] >> price[i];
+		}
+
+		int c = 40, f = 67;
+		cout << GREEN;
+		for (int i = 0; i <= f; i++)
+		{
+			if (i == 0)
+			{
+				cout << "                              ";
+			}
+			Sleep(10);
+			cout << "@";
+		}
+		cout << endl;
+		Sleep(c);
+		cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+		Sleep(c);
+		cout << "                            " << setw(2) << setfill(' ') << " " << "@@           " << BLUE << "               Welcome!     " << GREEN << "                         @@" << endl;
+		Sleep(c);
+		cout << "                            " << setw(2) << setfill(' ') << " " << "@@             " << BLUE << "         To  Cafe's  Menu    " << GREEN << "                      @@" << endl;
+		Sleep(c);
+		cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+		for (int i = 0; i <= f; i++)
+		{
+			if (i == 0)
+			{
+				cout << "                              ";
+			}
+			Sleep(10);
+			cout << "@";
+		}
+		cout << endl;
+
+		int p = 20;
+		Sleep(p);
+		cout << GREEN << "                           " << "|" << setw(72) << setfill('-') << right << "|" << endl;
+		Sleep(p);
+		cout << "                           " << setw(8) << setfill(' ') << right << YELLOW << "Dish number" << GREEN << "|" << YELLOW << "  Dish Name" << setw(38) << right << GREEN << "|" << YELLOW << "  Price " << endl;
+		Sleep(p);
+		cout << GREEN << "                           " << "|" << setw(72) << setfill('-') << "|" << endl;
+
+		for (int i = 0; i < num_of_dishes; i++)
+		{
+			Sleep(p);
+
+			cout << "                           " << GREEN << "|  " << YELLOW << setw(11) << setfill(' ') << left << dish_num[i] << setw(3) << GREEN << "|  " << YELLOW << setw(42) << left << dishname[i] << GREEN << "|  " << YELLOW << setw(10) << setfill(' ') << left << price[i] << GREEN << "|" << endl;
+		}
+		cout << "                           " << setw(73) << setfill('-') << "-" << RESET << endl;
+
+		read.close();
+	}
+}
+void stock::order_menu(char schedule, int d)
+{
+	char order[19];
+	int o_quantity;
+	int o_price, a;
+	char answer;
+
+	fstream write, write_o, write_m, read; // For writing the schedule order in admin file
+	write.open("schedule.txt", ios::out);
+	write_o.open("order.txt", ios::out);
+
+	read.open("menu.txt", ios::in);
+	for (int i = 0; !read.eof(); i++)
+	{
+		read >> dish_num[i] >> dishname[i] >> quantity[i] >> price[i];
+	}
+	cout << BLUE << "Enter quantity: ";
+	cin >> o_quantity;
+	cout << RESET;
+	if (o_quantity <= quantity[d])
+	{
+		// calculating price of order
+		o_price = o_quantity * price[d];
+
+		cout << BLUE << "The price of Your order will be : " << o_price << endl;
+		cout << "Want to Place order?\nAnswer(Y/N) : ";
+		cin >> answer;
+		if (answer == 'Y' || answer == 'y')
+		{
+
+			cout << "                            " << "|" << setw(97) << setfill('-') << right << "|" << endl;
+			cout << "                            " << "|  " << setw(8) << setfill(' ') << left << "Dish number" << setw(15) << "|  Dish Name" << setw(43) << right << "|  Quantity  " << setw(9) << right << "|  price " << setw(9) << right << "|  Total price " << endl;
+			cout << "                            " << "|" << setw(97) << setfill('-') << "|" << endl;
+			cout << "                            " << "|  " << setw(11) << setfill(' ') << left << dish_num[d] << setw(3) << "|  " << setw(42) << left << dishname[d] << "|  " << setw(10) << o_quantity << "|  " << setw(6) << setfill(' ') << left << price[d] << "|  " << setw(12) << setfill(' ') << left << o_price << " |" << endl;
+			cout << "                            " << setw(98) << setfill('-') << "-" << endl;
+
+			// writing in schedule file for schedule order
+			if (schedule == 'S' || schedule == 's')
+			{
+
+				write << dish_num[d] << " " << dishname[d] << " " << quantity[d] << " " << o_quantity << " " << price[d] << " " << o_price << endl;
+				write.close();
+			}
+			// writing in order file for normal order
+			if (schedule == 'n' || schedule == 'N')
+			{
+
+				write_o << dish_num[d] << " " << dishname[d] << " " << quantity[d] << " " << o_quantity << " " << price[d] << " " << o_price << endl;
+				write_o.close();
+			}
+
+			for(int i=0;i<20;i++)
+			{
+				write_m << dish_num[i] << " " << dishname[i] << " " << quantity[i] << " "  << price[d] << endl;
+				if(i==d)
+				{
+				quantity[i]-=quantity[d];
+				write_m << dish_num[i] << " " << dishname[i] << " " << quantity[i] << " "  << price[i] << endl;
+
+				}
+
+			}
+			write_m.open("menu.txt", ios::out);
+			for (int i = 0; i < 15; i++)
+			{
+				if (i == d)
+				{
+					quantity[i] -= o_quantity;
+				}
+				write_m << dish_num[i] << " " << dishname[i] << " " << quantity[i] << " " << price[i] << endl;
+			}
+			write_m.close();
+		}
+		else if (answer == 'N' || answer == 'n')
+		{
+			cout << "Thank You for Coming, Bye!" << endl;
+		}
+		else
+		{
+			cout << "Wrong input" << endl;
+		}
+	}
+	else
+	{
+		cout << "                            " << GREEN << setw(98) << setfill('-') << "-" << endl;
+		cout << "                            " << RED << "Oops!looks like your order is too much to be ordered at this instant" << endl;
+		cout << "                            " << GREEN << setw(98) << setfill('-') << "-" << endl
+			<< RESET;
+	}
+}
+
+void stock::search(char schedule)
+{
+	int d;
+	d = searching_bill();
+	char option;
+	if (d != -1)
+	{
+		cout << BLUE << "\nWant to order?\nAnswer(Y/N) : ";
+		cin >> option;
+		cout << RESET;
+		if (option == 'Y' || option == 'y')
+		{
+			order_menu(schedule, d);
+		}
+		else if (option == 'N' || option == 'n')
+		{
+			cout << BLUE << "Thank You Bye!!" << endl;
+		}
+		else
+		{
+			cout << RED << "wrong input" << endl;
+		}
+	}
+}
+
+int stock::searching_bill()
+{
+	fstream read;
+	read.open("menu.txt", ios::in);
+
+	if (!read.is_open())
+	{
+		cout << "Error openning the file" << endl;
+	}
+	else
+	{
+		// Read menu from the file for schedule ordering
+		for (int i = 0; i < num_of_dishes; i++)
+		{
+			read >> dish_num[i] >> dishname[i] >> quantity[i] >> price[i];
+		}
+		read.close();
+	}
+	char order[19];
+	int d = -1;
+	cout << BLUE << "Enter name of the dish :";
+	cin.ignore();
+	cin.getline(order, 19);
+	for (int j = 0; j < num_of_dishes; j++)
+	{
+		if (strcmp(order, dishname[j]) == 0)
+		{
+			d = j;
+			int p = 20;
+			Sleep(p);
+			cout << GREEN << "                           " << "|" << setw(72) << setfill('-') << right << "|" << endl;
+			Sleep(p);
+			cout << "                           " << setw(8) << setfill(' ') << right << YELLOW << "Dish number" << GREEN << "|" << YELLOW << "  Dish Name" << setw(38) << right << GREEN << "|" << YELLOW << "  Price " << endl;
+			Sleep(p);
+			cout << GREEN << "                           " << "|" << setw(72) << setfill('-') << "|" << endl;
+
+			Sleep(p);
+
+			cout << "                           " << GREEN << "|  " << YELLOW << setw(11) << setfill(' ') << left << dish_num[d] << setw(3) << GREEN << "|  " << YELLOW << setw(42) << left << dishname[d] << GREEN << "|  " << YELLOW << setw(10) << setfill(' ') << left << price[d] << GREEN << "|" << endl;
+
+			cout << "                           " << setw(73) << setfill('-') << "-" << RESET << endl;
+
+			break;
+		}
+	}
+	if (d == -1)
+	{
+		cout << "Dish not found" << endl;
+	}
+
+	return d;
+}
+
+void stock::Stocks()
+
+{
+
+	const int num_of_dishes = 15;
+
+	fstream read;
+	read.open("menu.txt", ios::in);
+
+	if (!read.is_open())
+	{
+		cout << "Error openning the file" << endl;
+	}
+	else
+	{
+		// Read menu from the file for schedule ordering
+		for (int i = 0; i < num_of_dishes; i++)
+		{
+			read >> dish_num[i] >> dishname[i] >> quantity[i] >> price[i];
+		}
+		int c = 40, f = 67;
+		cout << GREEN;
+		for (int i = 0; i <= f; i++)
+		{
+			if (i == 0)
+			{
+				cout << "                              ";
+			}
+			Sleep(10);
+			cout << "@";
+		}
+		cout << endl;
+		Sleep(c);
+		cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+		Sleep(c);
+		cout << "                            " << setw(2) << setfill(' ') << " " << "@@           " << BLUE << "               Welcome!     " << GREEN << "                         @@" << endl;
+		Sleep(c);
+		cout << "                            " << setw(2) << setfill(' ') << " " << "@@             " << BLUE << "         To  Cafe's Stock    " << GREEN << "                      @@" << endl;
+		Sleep(c);
+		cout << "                            " << setw(2) << setfill(' ') << " " << "@@                                                                @@" << endl;
+		for (int i = 0; i <= f; i++)
+		{
+			if (i == 0)
+			{
+				cout << "                              ";
+			}
+			Sleep(10);
+			cout << "@";
+		}
+		cout << endl;
+		int p = 20;
+		Sleep(p);
+		cout << GREEN << "                      " << "|" << setw(85) << setfill('-') << right << "|" << endl;
+		Sleep(p);
+		cout << "                      " << setw(8) << setfill(' ') << right << YELLOW << "Dish number" << GREEN << "|" << YELLOW << "  Dish Name" << setw(38) << right << GREEN << "|" << YELLOW << "  Quantity " << setw(2) << right << "|" << "  price " << endl;
+		Sleep(p);
+		cout << GREEN << "                      " << "|" << setw(85) << setfill('-') << "|" << endl;
+
+		for (int i = 0; i < num_of_dishes; i++)
+		{
+			Sleep(p);
+			if (quantity[i] < 25)
+			{
+				cout << "                      " << GREEN << "|  " << RED << setw(11) << setfill(' ') << left << dish_num[i] << setw(3) << GREEN << "|  " << RED << setw(42) << left << dishname[i] << GREEN << "|  " << RED << setw(10) << setfill(' ') << left << quantity[i] << GREEN << "|  " << RED << setw(10) << setfill(' ') << left << price[i] << GREEN << "|" << endl;
+			}
+			else
+			{
+				cout << "                      " << GREEN << "|  " << YELLOW << setw(11) << setfill(' ') << left << dish_num[i] << setw(3) << GREEN << "|  " << YELLOW << setw(42) << left << dishname[i] << GREEN << "|  " << YELLOW << setw(10) << setfill(' ') << left << quantity[i] << GREEN << "|  " << YELLOW << setw(10) << setfill(' ') << left << price[i] << GREEN << "|" << endl;
+			}
+		}
+		Sleep(p);
+		cout << "                      " << setw(86) << setfill('-') << "-" << endl;
+		cout << RESET;
+		read.close();
+	}
+}
+int e1, e2, e3, e4, e5;
+int main()
+{
+	int c = 50;
+	int d = 500;
+	system("cls");
+	Sleep(c);
+	cout << BLUE;
+	cout << setw(21) << " " << "          _______  _        _______  _______  _______  _______   _________ _______ " << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " |\\     /|(  ____ \\( \\      (  ____ \\(  ___  )(       )(  ____ \\  \\__   __/(  ___  )" << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " | )   ( || (    \\/| (      | (    \\/| (   ) || () () || (    \\/     ) (   | (   ) |" << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " | | _ | || (__    | |      | |      | |   | || || || || (__         | |   | |   | |" << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " | |( )| ||  __)   | |      | |      | |   | || |(_)| ||  __)        | |   | |   | |" << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " | || || || (      | |      | |      | |   | || |   | || (           | |   | |   | |" << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " | () () || (____/\\| (____/\\| (____/\\| (___) || )   ( || (____/\\     | |   | (___) |" << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " (_______)(_______/(_______/(_______/(_______)|/     \\|(_______/     )_(   (_______)\n"
+		<< endl;
+	cout << RED;
+	Sleep(d);
+	cout << setw(21) << " " << "  _______           ______   _______  _______    _______  _______  _______  _______ " << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " (  ____ \\|\\     /|(  ___ \\ (  ____ \\(  ____ )  (  ____ \\(  ___  )(  ____ \\(  ____ \\ " << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " | (    \\/( \\   / )| (   ) )| (    \\/| (    )|  | (    \\/| (   ) || (    \\/| (    \\/" << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " | |       \\ (_) / | (__/ / | (__    | (____)|  | |      | (___) || (__    | (__    " << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " | |        \\   /  |  __ (  |  __)   |     __)  | |      |  ___  ||  __)   |  __)   " << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " | |         ) (   | (  \\ \\ | (      | (\\ (     | |      | (   ) || (      | (      " << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " | (____/\\   | |   | )___) )| (____/\\| ) \\ \\__  | (____/\\| )   ( || )      | (____/\\ " << endl;
+	Sleep(c);
+	cout << setw(21) << " " << " (_______/   \\_/   |/ \\___/ (_______/|/   \\__/  (_______/|/     \\||/       (_______/ \n\n"
+		<< endl;
+
+
+	cout << BLUE;
+	for (int i = 0; i <= 1; i++)
+	{
+		if (i == 0 || i == 1)
+			cout << "               ";
+		for (int j = 0; j <= 101; j++)
+		{
+			if (i == 1)
+			{
+				cout << RED;
+			}
+			Sleep(10);
+			cout << "_";
+		}
+
+
+		cout << endl;
+	}
+	cout << RESET;
+	int option;
+
+	person* pr[3];
+	pr[0] = new Admin;
+	pr[1] = new Employee;
+	pr[2] = new Student;
+	do
+	{
+		cout << GREEN;
+		cout << "\nIdentify yourself :\n"
+			<< endl;
+		cout << "1. Admin\n2. Employee\n3. Student\n4. Exit the Cafe\n\n";
+		cout << "You are : ";
+		cout << BLUE << BOLD;
+		cin >> option;
+		cout << RESET;
+		switch (option)
+		{
+		case 1:
+			pr[0]->identify();
+			break;
+		case 2:
+			pr[1]->identify();
+			break;
+		case 3:
+			pr[2]->identify();
+			break;
+		case 4:
+			break;
+
+		default:
+			cout << RED << "Wrong Input" << RESET;
+		}
+	} while (option != 4);
+	system("cls");
+	cout << GREEN;
+	Sleep(c);
+	cout << setw(21) << setfill(' ') << " " << " _______  _______  _______  _______    ______   _______  _______  _ " << endl;
+	Sleep(c);
+	cout << setw(21) << " " << "(  ____ \\(  ___  )(       )(  ____ \\  (  ___ \\ (  ___  )(  ____ \\| \\    /\\ " << endl;
+	Sleep(c);
+	cout << setw(21) << " " << "| (    \\/| (   ) || () () || (    \\/  | (   ) )| (   ) || (    \\/|  \\  / /" << endl;
+	Sleep(c);
+	cout << setw(21) << " " << "| |      | |   | || || || || (__      | (__/ / | (___) || |      |  (_/ / " << endl;
+	Sleep(c);
+	cout << setw(21) << " " << "| |      | |   | || |(_)| ||  __)     |  __ (  |  ___  || |      |   _ (  " << endl;
+	Sleep(c);
+	cout << setw(21) << " " << "| |      | |   | || |   | || (        | (  \\ \\ | (   ) || |      |  ( \\ \\ " << endl;
+	Sleep(c);
+	cout << setw(21) << " " << "| (____/\\| (___) || )   ( || (____/\\  | )___) )| )   ( || (____/\\|  /  \\ \\ " << endl;
+	Sleep(c);
+	cout << setw(21) << " " << "(_______/(_______)|/     \\|(_______/  |/ \\___/ |/     \\|(_______/|_/    \\/" << endl;
+
+	Sleep(d);
+
+	cout << BLUE << setw(21) << " " << " _______  _______  _______  _        " << RED << " _    " << endl;
+	Sleep(c);
+	cout << BLUE << setw(21) << " " << "(  ____ \\(  ___  )(  ___  )( (    /|" << RED << " ( )  " << endl;
+	Sleep(c);
+	cout << BLUE << setw(21) << " " << "| (    \\/| (   ) || (   ) ||  \\  ( |" << RED << " | |  " << endl;
+	Sleep(c);
+	cout << BLUE << setw(21) << " " << "| (_____ | |   | || |   | ||   \\ | |" << RED << " | |  " << endl;
+	Sleep(c);
+	cout << BLUE << setw(21) << " " << "(_____  )| |   | || |   | || (\\ \\) |" << RED << " | |  " << endl;
+	Sleep(c);
+	cout << BLUE << setw(21) << " " << "      ) || |   | || |   | || | \\   |" << RED << " (_)  " << endl;
+	Sleep(c);
+	cout << BLUE << setw(21) << " " << "/\\____) || (___) || (___) || )  \\  |" << RED << "  _   " << endl;
+	Sleep(c);
+	cout << BLUE << setw(21) << " " << "\\_______)(_______)(_______)|/    )_)" << RED << " (_)  " << RESET << endl;
+}
